@@ -21,7 +21,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { OrderTableComponent } from './parts/order-table/order-table.component'
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox'
     AuthComponent,
     HeaderComponent,
     FooterComponent,
-    MainComponent
+    MainComponent,
+    OrderTableComponent
   ],
   imports: [
     BrowserModule,

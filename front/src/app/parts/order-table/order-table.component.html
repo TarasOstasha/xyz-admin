@@ -1,0 +1,71 @@
+<mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+</mat-form-field>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select" >
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox color="primary" (change)="$event ? masterToggle() : null" 
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+          
+            <td mat-cell *matCellDef="let row;let i=index;" 
+                >
+                <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null " [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+                <!-- {{i}}, -->
+                {{row.orderNumber}}-row.orderNumber,   {{expandedElement}} -expandedElement
+                <div class="example-element-detail"
+                    [@detailExpand]="row.orderNumber == expandedElement ? 'expanded' : 'collapsed'  ">
+                    <div class="example-element-diagram">
+                        <div class="example-element-position"> {{ i+1 }} </div>
+                        <div class="example-element-symbol"> some content </div>
+                        <div class="example-element-name"> some content </div>
+                        <div class="example-element-weight"> some content </div>
+                    </div>
+                </div>
+
+            </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="orderNumber">
+            <th mat-header-cell *matHeaderCellDef> Order No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.orderNumber}}{{ element | json }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="inHand">
+            <th mat-header-cell *matHeaderCellDef> In Hand </th>
+            <td mat-cell *matCellDef="let element"> {{element.inHand}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef> Symbol </th>
+            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"> -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row); expandedElement ? expandedElement = !expandedElement : expandedElement = row.orderNumber">
+
+        </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>
