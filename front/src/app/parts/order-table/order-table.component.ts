@@ -59,8 +59,8 @@ export class OrderTableComponent implements OnInit {
   approvedOrder = false;
   HoldOnOrder = false;
   NoMoneyOrder = false;
-  labelPosition: 'before' | 'after' = 'after';
-  toppings: FormGroup;
+  //checked: any = this.statusArray[0];
+  labelPosition: 'newOrder' | 'approvedOrder' = 'approvedOrder';
   orderStatus: any; // set order status;
 
 
@@ -82,15 +82,11 @@ export class OrderTableComponent implements OnInit {
   }
 
   constructor(fb: FormBuilder) {
-    this.toppings = fb.group({
-      pepperoni: false,
-      extracheese: false,
-      mushroom: false
-    });
+  
   }
 
   ngOnInit(): void {
-    console.log(this.setOrderStatusColor)
+    console.log(this.labelPosition)
   }
   displayedColumns: string[] = ['select', 'orderNumber', 'name', 'inHand', 'symbol'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
@@ -131,7 +127,7 @@ export class OrderTableComponent implements OnInit {
   changeStatus(status: any) {
     //console.log(status)
     this.orderStatus = status;
-    console.log(this.orderStatus)
+    console.log(status.checked)
   }
   setOrderStatusColor() { // suggesting rewrite code with switch() method 
     let status;
@@ -162,5 +158,56 @@ export class OrderTableComponent implements OnInit {
     //       || this.orderStatus == 'noMoneyOrder' ? 'grey': 'transparent' 
 
   }
+
+
+  orderData = [
+    {
+      name: 'Payment Processed', 
+      value1: '9/3',
+      value2: 'Taras',
+      value3: 'example ...'
+    },
+    {
+      name: 'Order Checked',
+      value1: '9/3',
+      value2: 'Jack',
+      value3: 'example ...'
+    },
+    {
+      name: 'Vendor Proof Sent to Client',
+      value1: '9/3',
+      value2: 'Smith',
+      value3: 'example ...',
+    },
+    {
+      name: 'Graphic Sent To Vendor',
+      value1: '9/3',
+      value2: 'Taras',
+      value3: 'example ...',
+    },
+    {
+      name: 'Client Approval Sent To Vendor',
+      value1: '9/3',
+      value2: '...',
+      value3: '9/3',
+    }
+  ]
+
+
+    // order data table edit bar
+    enableEdit = false;
+    enableEditIndex = null;
+    editInput = '';
+    editValue(e: any, index: any) {
+      e.preventDefault();
+      this.enableEdit = true;
+      this.enableEditIndex = index;
+      console.log(index, e)
+    }
+    saveValue() {
+      this.editInput = '';
+      this.enableEdit = false;
+    }
+  
 
 }
