@@ -11,31 +11,19 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export interface PeriodicElement {
   name: string;
   orderNumber: number;
-  inHand: number;
+  inHand: any;
   symbol: string;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  { orderNumber: 1, name: 'Hydrogen', inHand: 1.0079, symbol: 'H' },
-  { orderNumber: 2, name: 'Helium', inHand: 4.0026, symbol: 'He' },
-  { orderNumber: 3, name: 'Lithium', inHand: 6.941, symbol: 'Li' },
-  { orderNumber: 4, name: 'Beryllium', inHand: 9.0122, symbol: 'Be' },
-  { orderNumber: 5, name: 'Boron', inHand: 10.811, symbol: 'B' },
-  { orderNumber: 6, name: 'Carbon', inHand: 12.0107, symbol: 'C' },
-  { orderNumber: 7, name: 'Nitrogen', inHand: 14.0067, symbol: 'N' },
-  { orderNumber: 8, name: 'Oxygen', inHand: 15.9994, symbol: 'O' },
-  { orderNumber: 9, name: 'Fluorine', inHand: 18.9984, symbol: 'F' },
-  { orderNumber: 10, name: 'Neon', inHand: 20.1797, symbol: 'Ne' },
-  { orderNumber: 11, name: 'Hydrogen', inHand: 1.0079, symbol: 'H' },
-  { orderNumber: 12, name: 'Helium', inHand: 4.0026, symbol: 'He' },
-  { orderNumber: 13, name: 'Lithium', inHand: 6.941, symbol: 'Li' },
-  { orderNumber: 14, name: 'Beryllium', inHand: 9.0122, symbol: 'Be' },
-  { orderNumber: 15, name: 'Boron', inHand: 10.811, symbol: 'B' },
-  { orderNumber: 16, name: 'Carbon', inHand: 12.0107, symbol: 'C' },
-  { orderNumber: 17, name: 'Nitrogen', inHand: 14.0067, symbol: 'N' },
-  { orderNumber: 18, name: 'Oxygen', inHand: 15.9994, symbol: 'O' },
-  { orderNumber: 19, name: 'Fluorine', inHand: 18.9984, symbol: 'F' },
-  { orderNumber: 20, name: 'Neon', inHand: 20.1797, symbol: 'Ne' },
+  { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', symbol: 'H' },
+  { orderNumber: 2, name: 'Popup Display', inHand: '01/07', symbol: 'He' },
+  { orderNumber: 3, name: 'SEG Display', inHand: '05/07', symbol: 'Li' },
+  { orderNumber: 4, name: 'Slim Tension', inHand: '03/02', symbol: 'Be' },
+  { orderNumber: 5, name: 'Tower', inHand: '07/07', symbol: 'B' },
+  { orderNumber: 6, name: 'Digital Kiosk', inHand: '03/02', symbol: 'C' },
+  { orderNumber: 7, name: 'Hanging Sign', inHand: '04/09', symbol: 'N' },
+  { orderNumber: 8, name: 'Banner Stand', inHand: '01/02', symbol: 'O' },
 ];
 
 @Component({
@@ -198,14 +186,25 @@ export class OrderTableComponent implements OnInit {
     enableEdit = false;
     enableEditIndex = null;
     editInput = '';
-    editValue(e: any, index: any) {
+    cancelVal = '';
+
+    editValue(e: any, index: any, value: any) {
       e.preventDefault();
       this.enableEdit = true;
       this.enableEditIndex = index;
-      console.log(index, e)
+      this.cancelVal = value;
+      console.log(index, e, value)
     }
-    saveValue() {
+    saveValue(event: any, value: any) {
+      //console.log("Parents parent sibling:", event.target.parentElement.children[0]); // get parent child value
+      event.target.parentElement.children[0].innerText = value;
       this.editInput = '';
+      //console.log(value)
+      this.enableEdit = false;
+    
+    }
+    cancel() {
+      this.editInput = this.cancelVal;
       this.enableEdit = false;
     }
   
