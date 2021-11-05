@@ -1,8 +1,11 @@
+<div class="logo">
+    <img src="https://www.xyzdisplays.com/v/vspfiles/templates/Charmed/images/template/header_bg.jpg" alt="logo">
+</div>
 <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
 </mat-form-field>
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 main-wrapper">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
         <!-- Checkbox Column -->
@@ -159,7 +162,7 @@
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="symbol">
-            <th mat-header-cell *matHeaderCellDef> additional </th>
+            <th mat-header-cell *matHeaderCellDef> Product Code </th>
             <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
         </ng-container>
 

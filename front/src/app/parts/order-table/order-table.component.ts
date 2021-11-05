@@ -16,14 +16,14 @@ export interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', symbol: 'H' },
-  { orderNumber: 2, name: 'Popup Display', inHand: '01/07', symbol: 'He' },
-  { orderNumber: 3, name: 'SEG Display', inHand: '05/07', symbol: 'Li' },
-  { orderNumber: 4, name: 'Slim Tension', inHand: '03/02', symbol: 'Be' },
-  { orderNumber: 5, name: 'Tower', inHand: '07/07', symbol: 'B' },
-  { orderNumber: 6, name: 'Digital Kiosk', inHand: '03/02', symbol: 'C' },
-  { orderNumber: 7, name: 'Hanging Sign', inHand: '04/09', symbol: 'N' },
-  { orderNumber: 8, name: 'Banner Stand', inHand: '01/02', symbol: 'O' },
+  { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', symbol: 'or100' },
+  { orderNumber: 2, name: 'Popup Display', inHand: '01/07', symbol: 'or101' },
+  { orderNumber: 3, name: 'SEG Display', inHand: '05/07', symbol: 'or104' },
+  { orderNumber: 4, name: 'Slim Tension', inHand: '03/02', symbol: 'or1012' },
+  { orderNumber: 5, name: 'Tower', inHand: '07/07', symbol: 'or122' },
+  { orderNumber: 6, name: 'Digital Kiosk', inHand: '03/02', symbol: 'or150' },
+  { orderNumber: 7, name: 'Hanging Sign', inHand: '04/09', symbol: 'or180' },
+  { orderNumber: 8, name: 'Banner Stand', inHand: '01/02', symbol: 'or190' },
 ];
 
 @Component({

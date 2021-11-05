@@ -1,0 +1,96 @@
+// Color variables (appears count calculates by raw css)
+@color0: #fec503; // Appears 5 times
+@color1: #6c757d; // Appears 2 times
+@color2: #ffffff; // Appears 2 times
+
+
+
+a {
+	color: @color1;
+	&:hover {
+		color: @color0;
+		text-decoration: none;
+	}
+}
+::selection {
+		selection {
+			background: @color0;
+			text-shadow: none;
+		}
+	}
+
+footer {
+	background-color: #212529;
+	padding: 2rem 0;
+	.quick-links {
+		font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-size: 90%;
+		line-height: 40px;
+		margin-bottom: 0;
+		text-transform: none;
+	}
+}
+.footer-column {
+	text-align: center;
+	&:not( 
+		first-child) {
+			padding-top: 2rem;
+		}
+	
+	.nav-item {
+		.nav-link {
+			padding: 0.1rem 0;
+		}
+		span.nav-link {
+			color: @color1;
+		}
+		span.footer-title {
+			color: @color2;
+			font-size: 14px;
+			font-weight: 700;
+			text-transform: uppercase;
+		}
+		.fas {
+			margin-right: 0.5rem;
+		}
+	}
+	ul {
+		display: inline-block;
+	}
+}
+
+ul.social-buttons {
+	margin-bottom: 0;
+	li {
+		a {
+			-moz-transition: all 0.3s;
+			-webkit-transition: all 0.3s;
+			background-color: #1a1d20;
+			border-radius: 100%;
+			color: @color2;
+			display: block;
+			font-size: 20px;
+			height: 40px;
+			line-height: 40px;
+			outline: 0;
+			transition: all 0.3s;
+			width: 40px;
+			&:active {
+				background-color: @color0;
+			}
+			&:focus {
+				background-color: @color0;
+			}
+			&:hover {
+				background-color: @color0;
+			}
+		}
+	}
+}
+.copyright {
+	color: white;
+}
+.fa-ellipsis-h {
+	color: white;
+	padding: 2rem 0;
+}
