@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,8 +25,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
 
-import { OrderTableComponent } from './parts/order-table/order-table.component'
+import { OrderTableComponent } from './parts/order-table/order-table.component';
+import { OrdersPipe } from './pipes/orders.pipe'
 
 @NgModule({
   declarations: [
@@ -34,13 +37,15 @@ import { OrderTableComponent } from './parts/order-table/order-table.component'
     HeaderComponent,
     FooterComponent,
     MainComponent,
-    OrderTableComponent
+    OrderTableComponent,
+    OrdersPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     FormsModule,
     MatSliderModule,
     MatCardModule,
@@ -54,7 +59,8 @@ import { OrderTableComponent } from './parts/order-table/order-table.component'
     MatSelectModule,
     MatSnackBarModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

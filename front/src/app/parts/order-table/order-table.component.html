@@ -6,6 +6,90 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
 </mat-form-field>
 <div class="mat-elevation-z8 main-wrapper">
+
+    <table class="table myTable">
+        <thead>
+            <tr>
+                <th scope="col">Order No.</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">In Hand</th>
+                <th scope="col">Product Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of emails1">
+                <td>
+                    <mat-accordion>
+                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{ order.subject | orders }}
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div class="example-element-weight" [style.background]="setOrderStatusColor()">
+                                <mat-radio-group [(ngModel)]="labelPosition">
+                                    <mat-radio-button *ngFor="let status of statusArray;let i = index;" [value]="status"
+                                        (change)="changeStatus(status)" color="primary" [checked]="status">{{ status }}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                                <div class="example-element-symbol">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>General Order Notes</mat-label>
+                                        <input matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div class="example-element-name">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>WeTransfer Comments</mat-label>
+                                        <input matInput>
+                                    </mat-form-field>
+                                </div>
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">By</th>
+                                            <th scope="col">Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of orderData; let i = index">
+                                            <th scope="row">{{ data.name }}</th>
+                                            <td>
+                                                <span>{{ data.value1 }}</span><span style="color:red"
+                                                    *ngIf="enableEdit==true && enableEditIndex == i">
+                                                    {{ editInput }}</span>
+                                                <input [(ngModel)]="editInput"
+                                                    *ngIf="enableEdit && enableEditIndex == i" type="text">
+                                                <i [class]="(enableEdit == false) ? 'bi bi-pencil' : 'hide' "
+                                                    (click)="editValue($event, i, data.value1)"></i>
+                                                <i *ngIf="enableEdit && enableEditIndex == i" class="bi bi-check"
+                                                    (click)="saveValue($event, editInput)"></i>
+                                                <i *ngIf="enableEdit" (click)="enableEdit=false" ng-click="cancel()"
+                                                    class="bi bi-x"></i>
+                                            </td>
+                                            <td>{{ data.value2 }}</td>
+                                            <td>
+                                                {{ data.value3 }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </td>
+                <td><a target="_blank" href="https://www.xyzdisplays.com/48in-x-90in-EZ-Extend-Banner-Stand-Single-Sided-p/{{ order.orderDetail.productCode }}.htm">{{ order.orderDetail.productName }}</a></td>
+                <td>{{ order.orderDetail.deadline }}</td>
+                <td>{{ order.orderDetail.productCode }}</td>
+            </tr>
+
+        </tbody>
+    </table>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
         <!-- Checkbox Column -->
@@ -62,12 +146,17 @@
                                     <tr *ngFor="let data of orderData; let i = index">
                                         <th scope="row">{{ data.name }}</th>
                                         <td>
-                                            <span>{{ data.value1 }}</span><span style="color:red" *ngIf="enableEdit==true && enableEditIndex == i"> {{ editInput }}</span>
+                                            <span>{{ data.value1 }}</span><span style="color:red"
+                                                *ngIf="enableEdit==true && enableEditIndex == i"> {{ editInput }}</span>
                                             <!-- <span style="color: green;"> {{ editInput }}</span> -->
-                                            <input [(ngModel)]="editInput" *ngIf="enableEdit && enableEditIndex == i" type="text">
-                                            <i [class]="(enableEdit == false) ? 'bi bi-pencil' : 'hide' " (click)="editValue($event, i, data.value1)"></i>
-                                            <i *ngIf="enableEdit && enableEditIndex == i" class="bi bi-check" (click)="saveValue($event, editInput)"></i>
-                                            <i *ngIf="enableEdit" (click)="enableEdit=false" ng-click="cancel()" class="bi bi-x"></i>
+                                            <input [(ngModel)]="editInput" *ngIf="enableEdit && enableEditIndex == i"
+                                                type="text">
+                                            <i [class]="(enableEdit == false) ? 'bi bi-pencil' : 'hide' "
+                                                (click)="editValue($event, i, data.value1)"></i>
+                                            <i *ngIf="enableEdit && enableEditIndex == i" class="bi bi-check"
+                                                (click)="saveValue($event, editInput)"></i>
+                                            <i *ngIf="enableEdit" (click)="enableEdit=false" ng-click="cancel()"
+                                                class="bi bi-x"></i>
 
                                             <!-- <input type="text" *ngIf="enableEdit && enableEditIndex == i"> -->
                                             <!-- <button *ngIf="enableEdit && enableEditIndex == i" (click)="enableEdit=false" class="btn page-secondary-action-btn" ng-click="cancel()">Cancel</button>
@@ -81,58 +170,6 @@
                                             {{ data.value3 }}
                                         </td>
                                     </tr>
-                                    <!-- <tr> 
-                                        <th scope="row">Order Placed</th>
-                                        <td>
-                                            <span>{{ backendData.orderPlaceDate }}</span> <span style="color: green;"> {{ editInput }}</span>
-                                            <input [(ngModel)]="editInput"
-                                                value="{{ backendData.orderPlaceDate }}" 
-                                                *ngIf="editFlag" type="text"> 
-                                                <i [class]="(editFlag == false) ? 'bi bi-pencil' : 'hide' " 
-                                                    (click)="editValue($event)">
-                                                </i>
-                                                <i *ngIf="editFlag == true" class="bi bi-check" (click)="saveValue();"></i>
-                                        </td>
-                                        <td>{{ backendData.changesWereMadeBy }}</td>
-                                        <td>{{ backendData.orderPlacedNotes }} <i class="bi bi-pencil"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Order Checked</th>
-                                        <td>{{ backendData.vendorConfirmationChecked }} <i class="bi bi-pencil"></i>
-                                        </td>
-                                        <td>{{ backendData.vendorConfirmationCheckedBy }}</td>
-                                        <td>{{ backendData.vendorConfirmationCheckedNotes }} <i
-                                                class="bi bi-pencil"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Vendor Proof Sent to Client</th>
-                                        <td>{{ backendData.vendorProofSentToClient }} <i class="bi bi-pencil"></i>
-                                        </td>
-                                        <td>{{ backendData.vendorProofSentToClientBy }}</td>
-                                        <td>{{ backendData.vendorProofSentToClientNotes }} <i class="bi bi-pencil"></i>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Graphic Sent To Vendor</th>
-                                        <td>{{ backendData.graphicSentToVendor }} <i class="bi bi-pencil"></i>
-                                        </td>
-                                        <td>{{ backendData.graphicSentToVendorBy }}</td>
-                                        <td>{{ backendData.graphicSentToVendorNotes }} <i class="bi bi-pencil"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Graphic Sent To Vendor</th>
-                                        <td>{{ backendData.graphicSentToVendor }} <i class="bi bi-pencil"></i>
-                                        </td>
-                                        <td>{{ backendData.graphicSentToVendorBy }}</td>
-                                        <td>{{ backendData.graphicSentToVendorNotes }} <i class="bi bi-pencil"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Client Approval Sent To Vendor</th>
-                                        <td>{{ backendData.clientApprovalSentToVendor }} <i class="bi bi-pencil"></i>
-                                        </td>
-                                        <td>{{ backendData.vendorProofSentToClient }}</td>
-                                        <td>{{ backendData.vendorProofSentToClient }} <i class="bi bi-pencil"></i></td>
-                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
@@ -147,23 +184,22 @@
             <th mat-header-cell *matHeaderCellDef> Order No. </th>
             <td mat-cell *matCellDef="let element"> {{element.orderNumber}}</td>
         </ng-container>
-
         <!-- Name Column -->
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Product Name </th>
             <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
-        <!-- Weight Column -->
+        <!-- inHand Column -->
         <ng-container matColumnDef="inHand">
             <th mat-header-cell *matHeaderCellDef> In Hand </th>
             <td mat-cell *matCellDef="let element"> {{element.inHand}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
+        <ng-container matColumnDef="productCode">
             <th mat-header-cell *matHeaderCellDef> Product Code </th>
-            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.productCode}} </td>
         </ng-container>
 
 
@@ -186,4 +222,8 @@
 
 
 
-  
+<table>
+    <tr *ngFor="let email of emails1 ">
+        <td>{{ email.subject }}</td>
+    </tr>
+</table>
