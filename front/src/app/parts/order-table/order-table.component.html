@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th scope="col">Order No.</th>
+                <th >Order Status</th>
                 <th scope="col">Product Name</th>
                 <th scope="col">In Hand</th>
                 <th scope="col">Product Code</th>
@@ -26,7 +27,7 @@
                                     {{ order.subject | orders }}
                                 </mat-panel-title>
                                 <mat-panel-description>
-                                    Currently I am {{panelOpenState ? 'open' : 'closed'}}
+
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
                             <div class="example-element-weight" [style.background]="setOrderStatusColor()">
@@ -83,13 +84,27 @@
                         </mat-expansion-panel>
                     </mat-accordion>
                 </td>
-                <td><a target="_blank" href="https://www.xyzdisplays.com/48in-x-90in-EZ-Extend-Banner-Stand-Single-Sided-p/{{ order.orderDetail.productCode }}.htm">{{ order.orderDetail.productName }}</a></td>
+                <td>
+                    <mat-select [(ngModel)]="labelPosition">
+                        <mat-option *ngFor="let status of statusArray;let i = index;" [value]="status" color="primary"
+                            (change)="changeStatus(status)">
+                            {{ status }}
+                        </mat-option>
+                    </mat-select>
+                </td>
+                <td><a target="_blank"
+                        href="https://www.xyzdisplays.com/48in-x-90in-EZ-Extend-Banner-Stand-Single-Sided-p/{{ order.orderDetail.productCode }}.htm">{{ order.orderDetail.productName }}</a>
+                </td>
                 <td>{{ order.orderDetail.deadline }}</td>
                 <td>{{ order.orderDetail.productCode }}</td>
             </tr>
 
         </tbody>
     </table>
+
+    <br>
+    <br>
+    <br>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
         <!-- Checkbox Column -->

@@ -222,8 +222,10 @@ export class OrderTableComponent implements OnInit {
     if (this.expandedElement) event.stopPropagation();
 
   }
-
+  changedStatus = false;
+  nrSelect = 47;
   changeStatus(status: any) {
+    this.changedStatus = true;
     //console.log(status)
     this.orderStatus = status;
     console.log(status.checked)
