@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -72,6 +72,8 @@ export class OrderTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator; // get paginator
   @ViewChild(MatSort) sort!: MatSort;
 
+  @ViewChild('pRef') pRef!: ElementRef;
+
   emails: DataTable[] = [
     { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', productCode: 'or100' },
     { orderNumber: 2, name: 'Popup Display', inHand: '01/07', productCode: 'or101' },
@@ -79,6 +81,9 @@ export class OrderTableComponent implements OnInit {
   ]; // emails from server or data base
 
 
+  //* section color for selexted value*
+  myIndex = 0 // index for tr ngFor
+  optionCurrentIndex: any; // index from option select menu
 
   statusArray = ['newOrder', 'approvedOrder', 'holdOnOrder', 'noMoneyOrder', 'done']
   newOrder = true;
@@ -87,6 +92,8 @@ export class OrderTableComponent implements OnInit {
   NoMoneyOrder = false;
   //checked: any = this.statusArray[0];
   labelPosition: 'newOrder' | 'approvedOrder' = 'approvedOrder';
+  labelPosition1: any;
+
   orderStatus: any; // set order status;
 
   ELEMENT_DATA =
@@ -127,7 +134,7 @@ export class OrderTableComponent implements OnInit {
     }
   }
 
-  constructor(fb: FormBuilder, private _api: ApiService) {
+  constructor(fb: FormBuilder, private _api: ApiService, private element:ElementRef) {
   }
 
 
@@ -142,7 +149,6 @@ export class OrderTableComponent implements OnInit {
       this.emails1 = response.data;
       this.emails1.map((item: any, index: number) => {
         const userData = item.text.split('*');
-
         // data from email user info
         this.emails1[index].userEmailInfo = {
           billTo: userData[2].split('\n ').join(', ').replace(/\n/g, " "),
@@ -151,7 +157,7 @@ export class OrderTableComponent implements OnInit {
             creditCard: userData[8].split('\n').join(',').replace(' ', '').slice(1, userData[8].length - 2),
             expire: userData[20].split('\n').join(',').replace(',', ' ').slice(1, userData[20].length - 2)
           },
-          shippingMethod: userData[22].split('\n ').join(', ').replace(/\n/g, "")
+          shippingMethod: userData[22].split('\n ').join(', ').replace(/\n/g, ""),
         }
 
         // data from email order info
@@ -222,43 +228,52 @@ export class OrderTableComponent implements OnInit {
     if (this.expandedElement) event.stopPropagation();
 
   }
-  changedStatus = false;
-  nrSelect = 47;
-  changeStatus(status: any) {
-    this.changedStatus = true;
-    //console.log(status)
-    this.orderStatus = status;
-    console.log(status.checked)
-  }
-  setOrderStatusColor() { // suggesting rewrite code with switch() method 
-    let status;
-    if (this.orderStatus == 'done') status = 'green'
-    else if (this.orderStatus == 'newOrder') status = 'blue'
-    else if (this.orderStatus == 'approvedOrder') status = 'yellow'
-    else if (this.orderStatus == 'holdOnOrder') status = 'pink'
-    else if (this.orderStatus == 'noMoneyOrder') status = 'grey'
-    return status
-    //console.log(this.orderStatus)
-    // switch (this.orderStatus) {
-    //   case "green": this.orderStatus == 'done';
-    //     break;
-    //   case "blue": this.orderStatus == 'newOrder';
-    //     break;
-    //   case "yellow": this.orderStatus == 'approvedOrder';
-    //     break;
-    //   case "pink": this.orderStatus == 'holdOnOrder';
-    //     break;
-    //   case "grey": this.orderStatus == 'noMoneyOrder';
-    //     break;
-    // }
 
-    // return this.orderStatus == 'done' ? 'green': 'transparent' 
-    //       || this.orderStatus == 'newOrder' ? 'blue': 'transparent' 
-    //       || this.orderStatus == 'approvedOrder' ? 'yellow': 'transparent' 
-    //       || this.orderStatus == 'holdOnOrder' ? 'pink': 'transparent' 
-    //       || this.orderStatus == 'noMoneyOrder' ? 'grey': 'transparent' 
+  //changedStatus = false;
+  // changeStatus(status: any, i: any) {
+  //   this.changedStatus = true;
+  //   //console.log(status)
+  //   this.orderStatus = status;
+  //   console.log(status, i)
+  // }
 
+  ///
+  // whenClicked = [ 
+  //                 { status: 'newOrder', value: false, position: 1 } , 
+  //                 { status: 'approvedOrder', value: false, position: 2 }, 
+  //                 { status: 'holdOnOrder', value: false, position: 3 }, 
+  //                 { status: 'noMoneyOrder', value: false, position: 4 }, 
+  //                 { status: 'done', value: false, position: 5 } 
+  //               ]; 
+
+
+  onChange(selectedValue: any, index: any, event: any) {
+    this.optionCurrentIndex = event.currentTarget.options.selectedIndex;
+    this.myIndex = index; 
+    this.colors(this.optionCurrentIndex) 
   }
+
+  colors(index: number): any {
+    switch(index) {
+      case 0: return 'green'
+      case 1: return 'blue'
+      case 2: return 'yellow'
+      case 3: return 'pink'
+      case 4: return 'grey'
+      default: return 'transparent'
+    }
+  }
+
+  // getColor(index :number) : string {
+  //   switch( this.orderStatus) { 
+  //     case 'done' : return 'green' 
+  //     case 'newOrder' : return "blue"
+  //     case 'approvedOrder' : return "yellow"
+  //     case 'holdOnOrder': return "grey"
+  //     default: return "transparent"
+  //   }
+  // }
+  
 
 
   orderData = [

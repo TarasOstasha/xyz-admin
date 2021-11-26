@@ -11,14 +11,14 @@
         <thead>
             <tr>
                 <th scope="col">Order No.</th>
-                <th >Order Status</th>
+                <th scope="col">Order Status</th>
                 <th scope="col">Product Name</th>
                 <th scope="col">In Hand</th>
                 <th scope="col">Product Code</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let order of emails1">
+            <tr class="order-list" *ngFor="let order of emails1;let i = index;" [style.background]=" i == myIndex ? colors(optionCurrentIndex) : 'transparent' " #pRef>
                 <td>
                     <mat-accordion>
                         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -30,12 +30,12 @@
 
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
-                            <div class="example-element-weight" [style.background]="setOrderStatusColor()">
-                                <mat-radio-group [(ngModel)]="labelPosition">
+                            <div class="example-element-weight">
+                                <!-- <mat-radio-group [(ngModel)]="labelPosition">
                                     <mat-radio-button *ngFor="let status of statusArray;let i = index;" [value]="status"
-                                        (change)="changeStatus(status)" color="primary" [checked]="status">{{ status }}
+                                        (change)="changeStatus(status, i)" color="primary" [checked]="status">{{ status }}
                                     </mat-radio-button>
-                                </mat-radio-group>
+                                </mat-radio-group> -->
                                 <div class="example-element-symbol">
                                     <mat-form-field appearance="fill">
                                         <mat-label>General Order Notes</mat-label>
@@ -85,12 +85,20 @@
                     </mat-accordion>
                 </td>
                 <td>
-                    <mat-select [(ngModel)]="labelPosition">
+                        <!-- <select #val (change)="onChange(val.value,i)" > -->
+                        <select #val (change)="onChange(val.value,i, $event) ">
+                                <option *ngFor="let status of statusArray" [value]="status">
+                                <!-- <option *ngFor="let status of whenClicked;let index = index" [value]="status.value"> -->
+                                    {{ status }}
+                                </option>
+                        </select>
+
+                    <!-- <mat-select [(ngModel)]="labelPosition">
                         <mat-option *ngFor="let status of statusArray;let i = index;" [value]="status" color="primary"
-                            (change)="changeStatus(status)">
+                            (click)="changeStatus(status,i)">
                             {{ status }}
                         </mat-option>
-                    </mat-select>
+                    </mat-select> -->
                 </td>
                 <td><a target="_blank"
                         href="https://www.xyzdisplays.com/48in-x-90in-EZ-Extend-Banner-Stand-Single-Sided-p/{{ order.orderDetail.productCode }}.htm">{{ order.orderDetail.productName }}</a>
@@ -123,17 +131,17 @@
                 </mat-checkbox>
                 <!-- {{i}}, -->
                 <!-- {{row.orderNumber}}-row.orderNumber, {{expandedElement}} -expandedElement -->
-                <div class="example-element-detail" [style.background]="setOrderStatusColor()"
+                <div class="example-element-detail" 
                     [@detailExpand]="row.orderNumber == expandedElement ? 'expanded' : 'collapsed'  ">
                     <div class="example-element-diagram">
-                        <mat-radio-group [(ngModel)]="labelPosition">
-                            <mat-radio-button *ngFor="let status of statusArray;let i = index;" [value]="status"
-                                (change)="changeStatus(status)" color="primary" [checked]="status">{{ status }}
-                            </mat-radio-button>
+                        <!-- <mat-radio-group [(ngModel)]="labelPosition"> -->
+                            <!-- <mat-radio-button *ngFor="let status of statusArray;let i = index;" [value]="status"
+                                (change)="changeStatus(status, i)" color="primary" [checked]="status">{{ status }}
+                            </mat-radio-button> -->
                             <!-- <mat-radio-button class="example-margin" value="approvedOrder">Approved</mat-radio-button>
                             <mat-radio-button class="example-margin" value="HoldOnOrder">Wait</mat-radio-button>
                             <mat-radio-button class="example-margin" value="NoMoneyOrder">No Money</mat-radio-button> -->
-                        </mat-radio-group>
+                        <!-- </mat-radio-group> -->
                         <!-- <div class="example-element-position"> {{ i+1 }} </div> -->
                         <div class="example-element-symbol">
                             <mat-form-field appearance="fill">
