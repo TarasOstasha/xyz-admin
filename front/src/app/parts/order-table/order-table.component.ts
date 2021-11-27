@@ -72,7 +72,6 @@ export class OrderTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator; // get paginator
   @ViewChild(MatSort) sort!: MatSort;
 
-  @ViewChild('pRef') pRef!: ElementRef;
 
   emails: DataTable[] = [
     { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', productCode: 'or100' },
@@ -134,12 +133,53 @@ export class OrderTableComponent implements OnInit {
     }
   }
 
-  constructor(fb: FormBuilder, private _api: ApiService, private element:ElementRef) {
+  constructor(fb: FormBuilder, private _api: ApiService, private element: ElementRef) {
   }
 
 
-
+  userData: Array<any> = []; // user data arr
+  emails2: any;
   ngOnInit(): void {
+
+    this.getEmails().pipe((map) => {
+      return map
+    }).subscribe((res: any) => {
+      console.log(res.result)
+      this.emails2 = res.result.allInfo;
+      console.log(this.emails2)
+      this.emails2.map((item: any, index: number) => {
+        const userData = item.text.split('*');
+        //console.log(userData)
+        this.emails2[index].userEmailInfo = {
+          billTo: userData[2].split('\n ').join(', ').replace(/\n/g, " "),
+          shipTo: userData[4].split('\n ').join(', ').replace(/\n/g, " "),
+          paymentInfo: {
+            creditCard: userData[8].split('\n').join(',').replace(' ', '').slice(1, userData[8].length - 2),
+            expire: userData[20].split('\n').join(',').replace(',', ' ').slice(1, userData[20].length - 2)
+          },
+          shippingMethod: userData[22].split('\n ').join(', ').replace(/\n/g, ""),
+        }
+
+        // data from email order info
+        const orderData = userData[34].split('\n');
+        this.emails2[index].orderDetail = {
+          productCode: orderData[2],
+          productName: orderData[4],
+          options: orderData[5],
+          quantity: orderData[7],
+          price: orderData[9],
+          subTotal: orderData[19],
+          salesTax: orderData[25],
+          shippingCost: orderData[31],
+          grandTotal: orderData[37],
+          deadline: orderData[41]
+        }
+      });
+
+      //this.emails1 = res.result;
+    },
+      error => console.log(error))
+    
 
 
     this.dataEmails().pipe(
@@ -147,9 +187,11 @@ export class OrderTableComponent implements OnInit {
     ).subscribe((response: any) => {
       //console.log(response.data[0].text.split('*'))
       this.emails1 = response.data;
+      console.log(this.emails1)
       this.emails1.map((item: any, index: number) => {
         const userData = item.text.split('*');
-        // data from email user info
+        this.userData.push(userData) // this obj must be send via api service
+
         this.emails1[index].userEmailInfo = {
           billTo: userData[2].split('\n ').join(', ').replace(/\n/g, " "),
           shipTo: userData[4].split('\n ').join(', ').replace(/\n/g, " "),
@@ -174,14 +216,16 @@ export class OrderTableComponent implements OnInit {
           grandTotal: orderData[37],
           deadline: orderData[41]
         }
-        console.log(this.emails1)
+        //console.log(this.emails1)
       });
     },
       error => console.log(error))
 
-    setTimeout(() => {
-      //console.log(this.emails)
-    }, 500);
+    // setTimeout(() => {
+    //   this.sendEmails(this.userData).subscribe( (response: any) => console.log(response)) // save new order emails
+
+
+    // }, 500);
 
 
   }
@@ -189,6 +233,17 @@ export class OrderTableComponent implements OnInit {
   dataEmails() {
     return this._api.receiveAllEmails()
   }
+
+  // get all emails from data base
+  getEmails() {
+    return this._api.allEmails();
+  }
+
+  // save all emails
+  sendEmails() {
+    return this._api.saveEmails(this.userData)
+  }
+
 
 
   getMainData(val: any) {
@@ -229,14 +284,6 @@ export class OrderTableComponent implements OnInit {
 
   }
 
-  //changedStatus = false;
-  // changeStatus(status: any, i: any) {
-  //   this.changedStatus = true;
-  //   //console.log(status)
-  //   this.orderStatus = status;
-  //   console.log(status, i)
-  // }
-
   ///
   // whenClicked = [ 
   //                 { status: 'newOrder', value: false, position: 1 } , 
@@ -248,13 +295,13 @@ export class OrderTableComponent implements OnInit {
 
 
   onChange(selectedValue: any, index: any, event: any) {
-    this.optionCurrentIndex = event.currentTarget.options.selectedIndex;
-    this.myIndex = index; 
-    this.colors(this.optionCurrentIndex) 
+    this.optionCurrentIndex = event.currentTarget.options.selectedIndex; // get current index from selected value
+    this.myIndex = index;
+    this.colors(this.optionCurrentIndex)
   }
 
   colors(index: number): any {
-    switch(index) {
+    switch (index) {
       case 0: return 'green'
       case 1: return 'blue'
       case 2: return 'yellow'
@@ -273,7 +320,7 @@ export class OrderTableComponent implements OnInit {
   //     default: return "transparent"
   //   }
   // }
-  
+
 
 
   orderData = [

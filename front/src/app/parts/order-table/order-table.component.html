@@ -1,6 +1,8 @@
 <div class="logo">
     <img src="https://www.xyzdisplays.com/v/vspfiles/templates/Charmed/images/template/header_bg.jpg" alt="logo">
 </div>
+
+<button style="display:block;" mat-button color="primary" (click)="getEmails()">get emails</button>
 <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
@@ -18,7 +20,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="order-list" *ngFor="let order of emails1;let i = index;" [style.background]=" i == myIndex ? colors(optionCurrentIndex) : 'transparent' " #pRef>
+            <tr class="order-list" *ngFor="let order of emails2;let i = index;"
+                [style.background]=" i == myIndex ? colors(optionCurrentIndex) : 'transparent' ">
+                <td>{{ order.subject | orders }}</td>
+                <td>
+                    <select #val (change)="onChange(val.value,i, $event) ">
+                        <option *ngFor="let status of statusArray" [value]="status">
+                            <!-- <option *ngFor="let status of whenClicked;let index = index" [value]="status.value"> -->
+                            {{ status }}
+                        </option>
+                    </select>
+                </td>
+                <td>{{ order.orderDetail.productName }}</td>
+                <td>{{ order.orderDetail.deadline }}</td>
+                <td>{{ order.orderDetail.productCode }}</td>
+            </tr>
+            <tr class="order-list" *ngFor="let order of emails1;let i = index;"
+                [style.background]=" i == myIndex ? colors(optionCurrentIndex) : 'transparent' ">
                 <td>
                     <mat-accordion>
                         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -85,13 +103,13 @@
                     </mat-accordion>
                 </td>
                 <td>
-                        <!-- <select #val (change)="onChange(val.value,i)" > -->
-                        <select #val (change)="onChange(val.value,i, $event) ">
-                                <option *ngFor="let status of statusArray" [value]="status">
-                                <!-- <option *ngFor="let status of whenClicked;let index = index" [value]="status.value"> -->
-                                    {{ status }}
-                                </option>
-                        </select>
+                    <!-- <select #val (change)="onChange(val.value,i)" > -->
+                    <select #val (change)="onChange(val.value,i, $event) ">
+                        <option *ngFor="let status of statusArray" [value]="status">
+                            <!-- <option *ngFor="let status of whenClicked;let index = index" [value]="status.value"> -->
+                            {{ status }}
+                        </option>
+                    </select>
 
                     <!-- <mat-select [(ngModel)]="labelPosition">
                         <mat-option *ngFor="let status of statusArray;let i = index;" [value]="status" color="primary"
@@ -131,14 +149,14 @@
                 </mat-checkbox>
                 <!-- {{i}}, -->
                 <!-- {{row.orderNumber}}-row.orderNumber, {{expandedElement}} -expandedElement -->
-                <div class="example-element-detail" 
+                <div class="example-element-detail"
                     [@detailExpand]="row.orderNumber == expandedElement ? 'expanded' : 'collapsed'  ">
                     <div class="example-element-diagram">
                         <!-- <mat-radio-group [(ngModel)]="labelPosition"> -->
-                            <!-- <mat-radio-button *ngFor="let status of statusArray;let i = index;" [value]="status"
+                        <!-- <mat-radio-button *ngFor="let status of statusArray;let i = index;" [value]="status"
                                 (change)="changeStatus(status, i)" color="primary" [checked]="status">{{ status }}
                             </mat-radio-button> -->
-                            <!-- <mat-radio-button class="example-margin" value="approvedOrder">Approved</mat-radio-button>
+                        <!-- <mat-radio-button class="example-margin" value="approvedOrder">Approved</mat-radio-button>
                             <mat-radio-button class="example-margin" value="HoldOnOrder">Wait</mat-radio-button>
                             <mat-radio-button class="example-margin" value="NoMoneyOrder">No Money</mat-radio-button> -->
                         <!-- </mat-radio-group> -->
