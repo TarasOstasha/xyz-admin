@@ -38,7 +38,7 @@ router.post('/all-emails', (req, res) => {
   const dataEmails = emails;
   console.log(dataEmails)
   const newEmails = new Emails({
-    allInfo: ['hello world']
+    allInfo: dataEmails
   })
   newEmails.save()
     .then(result => {
@@ -66,7 +66,7 @@ router.get('/all-emails', (req, res) => {
       }
       res.status(200).json({
         message: 'You successfully fetched emails',
-        result: result[0]
+        result: result
       });
     })
     .catch(err => {

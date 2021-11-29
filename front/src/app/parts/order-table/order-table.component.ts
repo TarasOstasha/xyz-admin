@@ -14,11 +14,12 @@ import * as $ from "jquery";
 
 //declare let $: any;
 
-export interface PeriodicElement {
+export interface myDataTable {
   name: string;
   orderNumber: number;
+  status: string;
   inHand: any;
-  symbol: string;
+  prodCode: string;
 }
 
 // export interface DataTable {
@@ -37,22 +38,13 @@ export interface PeriodicElement {
 
 export interface DataTable {
   name: string;
-  orderNumber: number;
+  orderNumber: any;
   inHand: any;
   productCode: string;
 }
 
 
-// const ELEMENT_DATA: PeriodicElement[] = [
-//   { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', symbol: 'or100' },
-//   { orderNumber: 2, name: 'Popup Display', inHand: '01/07', symbol: 'or101' },
-//   { orderNumber: 3, name: 'SEG Display', inHand: '05/07', symbol: 'or104' },
-//   { orderNumber: 4, name: 'Slim Tension', inHand: '03/02', symbol: 'or1012' },
-//   { orderNumber: 5, name: 'Tower', inHand: '07/07', symbol: 'or122' },
-//   { orderNumber: 6, name: 'Digital Kiosk', inHand: '03/02', symbol: 'or150' },
-//   { orderNumber: 7, name: 'Hanging Sign', inHand: '04/09', symbol: 'or180' },
-//   { orderNumber: 8, name: 'Banner Stand', inHand: '01/02', symbol: 'or190' },
-// ];
+
 
 @Component({
   selector: 'app-order-table',
@@ -67,90 +59,68 @@ export interface DataTable {
   ],
 })
 export class OrderTableComponent implements OnInit {
-  emails1: any;
-  panelOpenState = false;
-  @ViewChild(MatPaginator) paginator!: MatPaginator; // get paginator
-  @ViewChild(MatSort) sort!: MatSort;
 
 
-  emails: DataTable[] = [
-    { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', productCode: 'or100' },
-    { orderNumber: 2, name: 'Popup Display', inHand: '01/07', productCode: 'or101' },
-    { orderNumber: 3, name: 'SEG Display', inHand: '05/07', productCode: 'or104' },
-  ]; // emails from server or data base
+  emails1: any; // old version
+  userData: Array<any> = []; // user data arr
+  newArr: Array<any> = []; // main arr ngFor
+  panelOpenState = false; // collapsed 
+
+  ELEMENT_DATA: myDataTable[] = [ // you have to set value from data base in ngOnInit !!!!!!!!!!!!!!!!!!!
+    { orderNumber: 1, name: 'Backlit Display', status: 'Done', inHand: '02/12', prodCode: 'or100' },
+    { orderNumber: 2, name: 'Popup Display', status: 'Done', inHand: '01/07', prodCode: 'or101' },
+    { orderNumber: 3, name: 'SEG Display', status: 'Done', inHand: '05/07', prodCode: 'or104' },
+    { orderNumber: 4, name: 'Slim Tension', status: 'Done', inHand: '03/02', prodCode: 'or1012' },
+    { orderNumber: 5, name: 'Tower', status: 'Done', inHand: '07/07', prodCode: 'or122' },
+    // { orderNumber: 6, name: 'Digital Kiosk', status: 'Done', inHand: '03/02', prodCode: 'or150' },
+    // { orderNumber: 7, name: 'Hanging Sign', status: 'Done', inHand: '04/09', prodCode: 'or180' },
+    // { orderNumber: 8, name: 'Banner Stand', status: 'Done', inHand: '01/02', prodCode: 'or190' },
+  ];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue, this.dataSource.filter, filterValue)
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  // @ViewChild(MatPaginator) paginator!: MatPaginator; // get paginator
+  // @ViewChild(MatSort) sort!: MatSort;
 
 
-  //* section color for selexted value*
+  //* section color for selected value *
   myIndex = 0 // index for tr ngFor
   optionCurrentIndex: any; // index from option select menu
 
   statusArray = ['newOrder', 'approvedOrder', 'holdOnOrder', 'noMoneyOrder', 'done']
-  newOrder = true;
-  approvedOrder = false;
-  HoldOnOrder = false;
-  NoMoneyOrder = false;
-  //checked: any = this.statusArray[0];
-  labelPosition: 'newOrder' | 'approvedOrder' = 'approvedOrder';
-  labelPosition1: any;
-
-  orderStatus: any; // set order status;
-
-  ELEMENT_DATA =
-    [
-      { orderNumber: 1, name: 'Backlit Display', inHand: '02/12', symbol: 'or100' },
-      { orderNumber: 2, name: 'Popup Display', inHand: '01/07', symbol: 'or101' },
-      { orderNumber: 3, name: 'SEG Display', inHand: '05/07', symbol: 'or104' },
-      { orderNumber: 4, name: 'Slim Tension', inHand: '03/02', symbol: 'or1012' },
-      { orderNumber: 5, name: 'Tower', inHand: '07/07', symbol: 'or122' },
-      { orderNumber: 6, name: 'Digital Kiosk', inHand: '03/02', symbol: 'or150' },
-      { orderNumber: 7, name: 'Hanging Sign', inHand: '04/09', symbol: 'or180' },
-      { orderNumber: 8, name: 'Banner Stand', inHand: '01/02', symbol: 'or190' },
-    ];
-
-  expandedElement: boolean = false; //PeriodicElement | null;
-
-  displayedColumns: string[] = ['select', 'orderNumber', 'name', 'inHand', 'productCode'];
-  // dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA); OLD
-  // selection = new SelectionModel<PeriodicElement>(true, []); OLD
-
-  dataSource = new MatTableDataSource<DataTable>(this.emails)
-  selection = new SelectionModel<DataTable>(true, []);
-
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-
-
+ 
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
 
   constructor(fb: FormBuilder, private _api: ApiService, private element: ElementRef) {
   }
 
 
-  userData: Array<any> = []; // user data arr
-  emails2: any;
-  ngOnInit(): void {
 
+  ngOnInit(): void {
+    console.log(this.newArr)
     this.getEmails().pipe((map) => {
       return map
     }).subscribe((res: any) => {
-      console.log(res.result)
-      this.emails2 = res.result.allInfo;
-      console.log(this.emails2)
-      this.emails2.map((item: any, index: number) => {
+      //console.log(res.result)
+      let emails2 = res.result;
+      console.log(emails2)
+
+      emails2.forEach((item: any, index: number)=>{ 
+         this.newArr.push(item.allInfo[0]);
+         
+      });
+      this.newArr.map((item: any, index: number) => {
         const userData = item.text.split('*');
-        //console.log(userData)
-        this.emails2[index].userEmailInfo = {
+
+        this.newArr[index].userEmailInfo = {
           billTo: userData[2].split('\n ').join(', ').replace(/\n/g, " "),
           shipTo: userData[4].split('\n ').join(', ').replace(/\n/g, " "),
           paymentInfo: {
@@ -160,9 +130,13 @@ export class OrderTableComponent implements OnInit {
           shippingMethod: userData[22].split('\n ').join(', ').replace(/\n/g, ""),
         }
 
-        // data from email order info
         const orderData = userData[34].split('\n');
-        this.emails2[index].orderDetail = {
+        //console.log(orderData)
+        this.ELEMENT_DATA[index].orderNumber = item.subject // HERE I HAVE TO PUT ORDER NUMBER MATERIALS
+        this.ELEMENT_DATA[index].prodCode = orderData[2] // HERE I HAVE TO PUT PRODUCT CODE MATERIALS
+        this.ELEMENT_DATA[index].name = orderData[4] // HERE I HAVE TO PUT PRODUCT NAME MATERIALS
+        console.log(this.ELEMENT_DATA)
+        this.newArr[index].orderDetail = {
           productCode: orderData[2],
           productName: orderData[4],
           options: orderData[5],
@@ -172,22 +146,50 @@ export class OrderTableComponent implements OnInit {
           salesTax: orderData[25],
           shippingCost: orderData[31],
           grandTotal: orderData[37],
-          deadline: orderData[41]
+          deadline: orderData[41],
         }
-      });
 
-      //this.emails1 = res.result;
+      });
+      
+      // this.emails2.map((item: any, index: number) => {
+      //   console.log(item, 'this emails item')
+      //   const userData = item.text.split('*');
+      //   this.emails2[index].userEmailInfo = {
+      //     billTo: userData[2].split('\n ').join(', ').replace(/\n/g, " "),
+      //     shipTo: userData[4].split('\n ').join(', ').replace(/\n/g, " "),
+      //     paymentInfo: {
+      //       creditCard: userData[8].split('\n').join(',').replace(' ', '').slice(1, userData[8].length - 2),
+      //       expire: userData[20].split('\n').join(',').replace(',', ' ').slice(1, userData[20].length - 2)
+      //     },
+      //     shippingMethod: userData[22].split('\n ').join(', ').replace(/\n/g, ""),
+      //   }
+      //   // data from email order info
+      //   const orderData = userData[34].split('\n');
+      //   //console.log(orderData)
+      //   this.emails2[index].orderDetail = {
+      //     productCode: orderData[2],
+      //     productName: orderData[4],
+      //     options: orderData[5],
+      //     quantity: orderData[7],
+      //     price: orderData[9],
+      //     subTotal: orderData[19],
+      //     salesTax: orderData[25],
+      //     shippingCost: orderData[31],
+      //     grandTotal: orderData[37],
+      //     deadline: orderData[41]
+      //   }
+      // });
     },
       error => console.log(error))
     
 
-
+    // old version. Fetch items from email
     this.dataEmails().pipe(
       map => map
     ).subscribe((response: any) => {
       //console.log(response.data[0].text.split('*'))
       this.emails1 = response.data;
-      console.log(this.emails1)
+      console.log(this.emails1, 'this emails 1')
       this.emails1.map((item: any, index: number) => {
         const userData = item.text.split('*');
         this.userData.push(userData) // this obj must be send via api service
@@ -220,14 +222,6 @@ export class OrderTableComponent implements OnInit {
       });
     },
       error => console.log(error))
-
-    // setTimeout(() => {
-    //   this.sendEmails(this.userData).subscribe( (response: any) => console.log(response)) // save new order emails
-
-
-    // }, 500);
-
-
   }
   // get emails order
   dataEmails() {
@@ -252,38 +246,6 @@ export class OrderTableComponent implements OnInit {
 
 
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. - SELECT ALL CHECKBOX */
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-    console.log(this.selection)
-    this.selection.select(...this.dataSource.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: DataTable): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.orderNumber + 1}`;
-  }
-
-
-
-  openHiddenInfo(event: Event) {
-    if (this.expandedElement) event.stopPropagation();
-
-  }
-
   ///
   // whenClicked = [ 
   //                 { status: 'newOrder', value: false, position: 1 } , 
@@ -296,6 +258,7 @@ export class OrderTableComponent implements OnInit {
 
   onChange(selectedValue: any, index: any, event: any) {
     this.optionCurrentIndex = event.currentTarget.options.selectedIndex; // get current index from selected value
+    console.log(this.optionCurrentIndex)
     this.myIndex = index;
     this.colors(this.optionCurrentIndex)
   }
@@ -306,10 +269,12 @@ export class OrderTableComponent implements OnInit {
       case 1: return 'blue'
       case 2: return 'yellow'
       case 3: return 'pink'
-      case 4: return 'grey'
+      case 4: return '#07fd07'
       default: return 'transparent'
     }
   }
+
+  myTextDecoration = 'line-through';
 
   // getColor(index :number) : string {
   //   switch( this.orderStatus) { 
@@ -383,5 +348,15 @@ export class OrderTableComponent implements OnInit {
     this.enableEdit = false;
   }
 
+
+
+
+  displayedColumns: string[] = ['orderNo', 'name', 'status', 'inHand', 'prodCode'];
+  onChange1(selectedValue: any, index: any, event: any) {
+    this.optionCurrentIndex = event.currentTarget.options.selectedIndex; // get current index from selected value
+    console.log(this.optionCurrentIndex)
+    this.myIndex = index;
+    this.colors(this.optionCurrentIndex)
+  }
 
 }
