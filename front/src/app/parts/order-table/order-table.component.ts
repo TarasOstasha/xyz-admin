@@ -2,7 +2,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -16,7 +16,7 @@ import * as $ from "jquery";
 
 export interface myDataTable {
   name: string;
-  orderNumber: number;
+  orderNumber: any;
   status: string;
   inHand: any;
   prodCode: string;
@@ -67,14 +67,11 @@ export class OrderTableComponent implements OnInit {
   panelOpenState = false; // collapsed 
 
   ELEMENT_DATA: myDataTable[] = [ // you have to set value from data base in ngOnInit !!!!!!!!!!!!!!!!!!!
-    { orderNumber: 1, name: 'Backlit Display', status: 'Done', inHand: '02/12', prodCode: 'or100' },
-    { orderNumber: 2, name: 'Popup Display', status: 'Done', inHand: '01/07', prodCode: 'or101' },
-    { orderNumber: 3, name: 'SEG Display', status: 'Done', inHand: '05/07', prodCode: 'or104' },
-    { orderNumber: 4, name: 'Slim Tension', status: 'Done', inHand: '03/02', prodCode: 'or1012' },
-    { orderNumber: 5, name: 'Tower', status: 'Done', inHand: '07/07', prodCode: 'or122' },
-    // { orderNumber: 6, name: 'Digital Kiosk', status: 'Done', inHand: '03/02', prodCode: 'or150' },
-    // { orderNumber: 7, name: 'Hanging Sign', status: 'Done', inHand: '04/09', prodCode: 'or180' },
-    // { orderNumber: 8, name: 'Banner Stand', status: 'Done', inHand: '01/02', prodCode: 'or190' },
+    // { orderNumber: '', name: '', status: 'Dne', inHand: '', prodCode: '' },
+    // { orderNumber: 'Order number 20000 received', name: 'Popup Display', status: 'Done', inHand: '01/07', prodCode: 'or101' },
+    // { orderNumber: 'Order number 20000 received', name: 'SEG Display', status: 'Done', inHand: '05/07', prodCode: 'or104' },
+    // { orderNumber: 'Order number 20000 received', name: 'Slim Tension', status: 'Done', inHand: '03/02', prodCode: 'or1012' },
+    // { orderNumber: 'Order number 20000 received', name: 'Tower', status: 'Done', inHand: '07/07', prodCode: 'or122' },
   ];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
@@ -84,8 +81,8 @@ export class OrderTableComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  // @ViewChild(MatPaginator) paginator!: MatPaginator; // get paginator
-  // @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator; // get paginator
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   //* section color for selected value *
@@ -95,27 +92,41 @@ export class OrderTableComponent implements OnInit {
   statusArray = ['newOrder', 'approvedOrder', 'holdOnOrder', 'noMoneyOrder', 'done']
 
   ngAfterViewInit() {
- 
+    // this.dataSource.paginator = this.paginator;
   }
 
 
   constructor(fb: FormBuilder, private _api: ApiService, private element: ElementRef) {
   }
 
+  // MatPaginator Output
+  pageEvent!: PageEvent;
+  //datasource: null;
+  pageIndex!: number;
+  pageSize!: number;
+  length!: number;
+  pageSizeOptions: number[] = [2, 4, 6]//[5, 10, 25, 100];
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+  }
 
-
-  ngOnInit(): void {
-    console.log(this.newArr)
+  
+  async ngOnInit() {
+     
     this.getEmails().pipe((map) => {
       return map
     }).subscribe((res: any) => {
       //console.log(res.result)
       let emails2 = res.result;
-      console.log(emails2)
+      this.length = emails2.length;
+      console.log(emails2.length)
 
-      emails2.forEach((item: any, index: number)=>{ 
-         this.newArr.push(item.allInfo[0]);
-         
+      emails2.forEach((item: any, index: number) => {
+        this.newArr.push(item.allInfo[0]);
+        this.ELEMENT_DATA.push(item.allInfo[0]);
+        this.dataSource.paginator = this.paginator; // initialize firs load paginator to avoid empty space in mat table
       });
       this.newArr.map((item: any, index: number) => {
         const userData = item.text.split('*');
@@ -135,7 +146,7 @@ export class OrderTableComponent implements OnInit {
         this.ELEMENT_DATA[index].orderNumber = item.subject // HERE I HAVE TO PUT ORDER NUMBER MATERIALS
         this.ELEMENT_DATA[index].prodCode = orderData[2] // HERE I HAVE TO PUT PRODUCT CODE MATERIALS
         this.ELEMENT_DATA[index].name = orderData[4] // HERE I HAVE TO PUT PRODUCT NAME MATERIALS
-        console.log(this.ELEMENT_DATA)
+        //console.log(this.ELEMENT_DATA)
         this.newArr[index].orderDetail = {
           productCode: orderData[2],
           productName: orderData[4],
@@ -150,7 +161,7 @@ export class OrderTableComponent implements OnInit {
         }
 
       });
-      
+
       // this.emails2.map((item: any, index: number) => {
       //   console.log(item, 'this emails item')
       //   const userData = item.text.split('*');
@@ -181,7 +192,7 @@ export class OrderTableComponent implements OnInit {
       // });
     },
       error => console.log(error))
-    
+
 
     // old version. Fetch items from email
     this.dataEmails().pipe(
