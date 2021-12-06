@@ -93,6 +93,7 @@ export class OrderTableComponent implements OnInit {
 
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
 

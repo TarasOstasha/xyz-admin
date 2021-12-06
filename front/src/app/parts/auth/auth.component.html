@@ -1,11 +1,11 @@
 <app-header></app-header>
 <div class="auth">
-    <mat-card class="auth-form">
-        <mat-card-actions>
-            <form class="example-form">
+    <mat-card class="auth-form" [ngSwitch]="authentification">
+        <mat-card-actions *ngSwitchCase=" 'sign_in' ">
+            <form [formGroup]="login" class="example-form">
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Email</mat-label>
-                    <input type="email" matInput placeholder="Ex. pat@example.com">
+                    <input formControlName="email" type="email" matInput placeholder="Ex. pat@example.com">
                     <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                     <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
                                 Please enter a valid email address
@@ -17,11 +17,29 @@
                 </mat-form-field>
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Password</mat-label>
-                    <input type="password" matInput placeholder="1111">
+                    <input formControlName="password" type="password" matInput placeholder="1111">
                 </mat-form-field>
             </form>
-            <button mat-button>Sign In</button>
-            <button mat-button>Sign Out</button>
+            <button mat-button (click)="logIn();">Sign In</button>
+            <button mat-button (click)="authentification = 'sign_up' ">Sign Up</button>
+        </mat-card-actions>
+        <mat-card-actions *ngSwitchCase=" 'sign_up' ">
+            <form [formGroup]="register" class="example-form">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Full Name</mat-label>
+                    <input formControlName="name" type="email" matInput placeholder="Ex. pat@example.com">
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="email" type="email" matInput placeholder="Ex. pat@example.com">
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Password</mat-label>
+                    <input formControlName="password" type="password" matInput placeholder="1111">
+                </mat-form-field>
+            </form>
+            <button mat-button (click)="authentification = 'sign_in' ">Sign In</button>
+            <button mat-button (click)="signUp();">Register</button>
         </mat-card-actions>
     </mat-card>
 </div>

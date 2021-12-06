@@ -9,7 +9,7 @@
 <!-- </mat-form-field> -->
 <div class="mat-elevation-z8 main-wrapper">
 
-    <table class="table myTable">
+    <table style="display: none" class="table myTable">
         <thead>
             <tr>
                 <th scope="col">Order No.</th>
@@ -131,6 +131,8 @@
     <br>
     <br>
     <br>
+
+
     <mat-form-field appearance="standard">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
@@ -138,7 +140,7 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 myData-table" matSort>
         <!-- Order Number Column -->
         <ng-container matColumnDef="orderNo">
-            <mat-header-cell class="myTable-order" *matHeaderCellDef> Order No. </mat-header-cell>
+            <mat-header-cell class="myTable-order" *matHeaderCellDef mat-sort-header> Order No. </mat-header-cell>
             <mat-cell class="myTable-order" *matCellDef="let element">
                 <!-- {{ element.orderNumber | orders }} -->
                 <mat-accordion>
@@ -204,7 +206,7 @@
 
         <!-- Order Name Column -->
         <ng-container matColumnDef="name">
-            <mat-header-cell class="myTable-name" *matHeaderCellDef> Name </mat-header-cell>
+            <mat-header-cell class="myTable-name" *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
             <mat-cell class="myTable-name" *matCellDef="let element"><a
                     href="https://www.xyzdisplays.com/48in-x-90in-EZ-Extend-Banner-Stand-Single-Sided-p/{{ element.name }}.htm">{{element.name}}</a>
             </mat-cell>
@@ -212,7 +214,7 @@
 
         <!-- Order Status Column -->
         <ng-container matColumnDef="status">
-            <mat-header-cell class="myTable-status" *matHeaderCellDef> Order Status </mat-header-cell>
+            <mat-header-cell class="myTable-status" *matHeaderCellDef mat-sort-header> Order Status </mat-header-cell>
             <mat-cell class="myTable-status" *matCellDef="let element;let i = index">
                 <!-- <mat-label>Favorite car</mat-label> -->
                 <!-- {{ element.status }} hello -->
@@ -226,13 +228,13 @@
 
         <!-- inHand Date Column -->
         <ng-container matColumnDef="inHand">
-            <mat-header-cell class="myTable-inHand" *matHeaderCellDef> inHand </mat-header-cell>
+            <mat-header-cell class="myTable-inHand" *matHeaderCellDef mat-sort-header> inHand </mat-header-cell>
             <mat-cell class="myTable-inHand" *matCellDef="let element"> {{element.inHand}} </mat-cell>
         </ng-container>
 
         <!-- Product Code Column -->
         <ng-container matColumnDef="prodCode">
-            <mat-header-cell class="myTable-code" *matHeaderCellDef> Product Code </mat-header-cell>
+            <mat-header-cell class="myTable-code" *matHeaderCellDef mat-sort-header> Product Code </mat-header-cell>
             <mat-cell class="myTable-code" *matCellDef="let element"> {{ element.prodCode }} </mat-cell>
         </ng-container>
         <!-- Header Row -->
@@ -241,6 +243,10 @@
         <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"
             [style.text-decoration]=" optionCurrentIndex == 4 && i == myIndex ? myTextDecoration : null "
             [style.background]=" i == myIndex ? colors(optionCurrentIndex) : 'transparent' "></mat-row>
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
     </table>
     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons aria-label="Select page of orders">
     </mat-paginator> -->

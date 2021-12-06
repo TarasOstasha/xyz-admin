@@ -29,5 +29,23 @@ export class ApiService {
     return this._http.get(url + 'all-emails')
   }
 
+  // ** auth block
+  sendLogin(login: any) {
+    return this._http.post(url + 'login', login).toPromise();
+  }
+
+  sendUserRegistretion(registerData: any) {
+    return this._http.post(url + 'register', registerData).toPromise();
+  }
+
+  //check if authentificated user
+  get isAuthentificated() {
+    return !!localStorage.getItem('token')
+  }
+
+  logOut() {
+    localStorage.removeItem('token');
+  }
+
 
 }
