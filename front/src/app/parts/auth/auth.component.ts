@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,11 @@ export class AuthComponent implements OnInit {
   register!: FormGroup;
   authentification = 'sign_in'
 
+  //@Output() userName = new EventEmitter(); // pass user name to the header component
+  //@Input() userName = this.getName;
+
+
+
   constructor(
     private _formBuilder: FormBuilder,
     private _api: ApiService,
@@ -23,6 +28,8 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  
+
     this.login = this._formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
@@ -35,19 +42,21 @@ export class AuthComponent implements OnInit {
   }
 
   async logIn() {
-    console.log(this.login.value)
+    //console.log(this.login.value)
     try {
       const result: any = await this._api.sendLogin(this.login.value);
-      console.log(result)
+      console.log(result.user.name, 'res from back')
       this._toastr.success('Success Login');
       this.login.reset(); // reset form
-      localStorage.setItem('token', result); //save token from backend
+      localStorage.setItem('name', result.user.name); //save token from backend
       this._router.navigate(['main']);
+    
     } catch (error) {
       console.log('there is some err on server', error);
       this._toastr.error('ERROR, There is no user registered');
     }
   }
+
 
   async signUp() {
     try {
@@ -88,5 +97,8 @@ export class AuthComponent implements OnInit {
 
   }
 
+  get getName() {
+    return localStorage.getItem('name'); // get name from local storage and paste it to the header component
+  }
 
 }

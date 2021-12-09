@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, AfterContentInit } from '@angular/core';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.less']
 })
 export class HeaderComponent implements OnInit {
+  name: any = '';
 
-  constructor() { }
+  constructor(private _api: ApiService) { }
 
   ngOnInit(): void {
+    this.checkName();
+    console.log(this.checkName())
+  }
+
+  checkName() {
+    return this.name = this._api.logIn();
+  }
+
+  logOut() {
+    this._api.logOut();
+    document.location.href=document.location.href
   }
 
 }

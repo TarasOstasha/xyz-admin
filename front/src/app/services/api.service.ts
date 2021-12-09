@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -40,12 +41,26 @@ export class ApiService {
 
   //check if authentificated user
   get isAuthentificated() {
-    return !!localStorage.getItem('token')
+    return !!localStorage.getItem('name')
   }
 
-  logOut() {
-    localStorage.removeItem('token');
+  private _isLoggedIn = new BehaviorSubject<boolean>(false); // take a look for the status
+  get isLoggedIn() {
+    return this._isLoggedIn.asObservable();
   }
+
+  logIn() {
+    this._isLoggedIn.next(true); // set true if logged in
+    //console.log(this.isLoggedIn)
+    return localStorage.getItem('name');
+  }
+  logOut() {
+    this._isLoggedIn.next(false); // set false if logged out
+    //console.log(this.isLoggedIn)
+    localStorage.removeItem('name');
+  }
+
+
 
 
 }
