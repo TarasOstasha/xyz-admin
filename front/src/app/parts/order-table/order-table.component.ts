@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { colorStatusInterface } from '../../interfaces/colorStatusModel';
 
 //rxjs
 import { map } from 'rxjs/operators';
@@ -20,7 +21,12 @@ export interface myDataTable {
   status: string;
   inHand: any;
   prodCode: string;
+  color: any;
 }
+
+// export interface colorStatus {
+//   color: string
+// }
 
 // export interface DataTable {
 //   attachments: any,
@@ -71,7 +77,7 @@ export class OrderTableComponent implements OnInit {
     // { orderNumber: 'Order number 20000 received', name: 'Popup Display', status: 'Done', inHand: '01/07', prodCode: 'or101' },
     // { orderNumber: 'Order number 20000 received', name: 'SEG Display', status: 'Done', inHand: '05/07', prodCode: 'or104' },
     // { orderNumber: 'Order number 20000 received', name: 'Slim Tension', status: 'Done', inHand: '03/02', prodCode: 'or1012' },
-    // { orderNumber: 'Order number 20000 received', name: 'Tower', status: 'Done', inHand: '07/07', prodCode: 'or122' },
+    { orderNumber: 'Order number 20000 received', name: 'Tower', status: 'Done', inHand: '07/07', prodCode: 'or122', color: [] },
   ];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
@@ -89,7 +95,9 @@ export class OrderTableComponent implements OnInit {
   myIndex = 0 // index for tr ngFor
   optionCurrentIndex: any; // index from option select menu
 
-  statusArray = ['newOrder', 'approvedOrder', 'holdOnOrder', 'noMoneyOrder', 'done']
+  //statusArray = ['newOrder', 'approvedOrder', 'holdOnOrder', 'noMoneyOrder', 'done']
+  statusArray = [ {status: 'newOrder', color: 'green'}, { status: 'approvedOrder', color: 'red' }, { status: 'holdOnOrder', color: 'yellow' }, { status: 'noMoneyOrder', color: 'blue' }, { status: 'done', color: 'black' }]
+
 
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator;
@@ -106,16 +114,18 @@ export class OrderTableComponent implements OnInit {
   pageIndex!: number;
   pageSize!: number;
   length!: number;
-  pageSizeOptions: number[] = [2, 4, 6]//[5, 10, 25, 100];
+  pageSizeOptions: number[] = [4, 8, 10]//[5, 10, 25, 100];
   setPageSizeOptions(setPageSizeOptionsInput: string) {
     if (setPageSizeOptionsInput) {
       this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
     }
   }
 
-  
+  colorStatusResult: any;
   async ngOnInit() {
-     
+    this.colorStatusResult = await this._api.getColor();
+    console.log(this.colorStatusResult)
+    
     this.getEmails().pipe((map) => {
       return map
     }).subscribe((res: any) => {
@@ -230,7 +240,8 @@ export class OrderTableComponent implements OnInit {
           grandTotal: orderData[37],
           deadline: orderData[41]
         }
-        //console.log(this.emails1)
+        //this.userData.push(orderData)
+        console.log(this.emails1)
       });
     },
       error => console.log(error))
@@ -247,7 +258,8 @@ export class OrderTableComponent implements OnInit {
 
   // save all emails
   sendEmails() {
-    return this._api.saveEmails(this.userData)
+    //return this._api.saveEmails(this.userData)
+    return this._api.saveEmails(this.emails1)
   }
 
 
@@ -362,6 +374,7 @@ export class OrderTableComponent implements OnInit {
 
 
 
+  colorStatus: colorStatusInterface[] = []; //  color status
 
   displayedColumns: string[] = ['orderNo', 'name', 'status', 'inHand', 'prodCode'];
   onChange1(selectedValue: any, index: any, event: any) {
@@ -369,6 +382,35 @@ export class OrderTableComponent implements OnInit {
     console.log(this.optionCurrentIndex)
     this.myIndex = index;
     this.colors(this.optionCurrentIndex)
+
+    const color: any = this.statusArray[this.optionCurrentIndex].color; // initialize color
+    if(this.colorStatus.length === 0) this.colorStatus.push(color) // add color if arr is empty
+    else if ( this.colorStatus.length > 0 && !this.colorStatus.includes(color) ) this.colorStatus.push(color) // add all colors if arr does not includes duplicated values
+    else if( this.colorStatus.includes(color) ) this.colorStatus.splice(this.colorStatus.indexOf(color), 1) // remove colors from array if choose 2 times
+    this.ELEMENT_DATA[index].color = this.colorStatus;
+    console.log(this.colorStatus, this.ELEMENT_DATA[index].color.length)
+  }
+
+  orderColorDataArr: any = [];
+  async sendColorStatus(i: any) { // send colors to the mongoDB
+    console.log(i,this.ELEMENT_DATA[i].orderNumber)
+    const orderNumber = this.ELEMENT_DATA[i].orderNumber.replace(/[^0-9]/g,'');
+    const orderColorObj: any = { 
+      orderNumber,
+      colorStatusArr: this.colorStatus
+    };
+    this.orderColorDataArr.push(orderColorObj);
+    console.log(this.orderColorDataArr)
+    //const pickedColorStatus: any = await this._api.colorStatus(this.orderColorDataArr);
+    //console.log(pickedColorStatus)
+    this.colorStatus = [];
+    // console.log(this.colorStatus, this.ELEMENT_DATA[i])
+  }
+
+  async getColorStatus() {
+    const colorStatusResult = await this._api.getColor();
+    console.log(typeof colorStatusResult)
+    //return colorStatusResult
   }
 
 }

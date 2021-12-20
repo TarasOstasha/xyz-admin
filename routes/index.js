@@ -10,19 +10,7 @@ const bcrypt = require('bcrypt');
 //let emails = []; // arr all emails from email API
 
 const User = require('../models/userModel');
-
-
-const session = require("express-session");
-const store = new session.MemoryStore();
-app.use(
-  session({
-    secret: "f4z4gs$Gcg",
-    cookie: { maxAge: 300000000, secure: false },
-    saveUninitialized: false,
-    resave: false,
-    store,
-  })
-);
+const OrderColorStatus = require('../models/colorStatusModel');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -80,6 +68,38 @@ router.post('/login', async (req, res) => {
       message: error
     });
   }
+});
+
+router.post('/color-status', async (req, res) => {
+  try {
+    const pickedColorArr = req.body;
+    console.log(pickedColorArr)
+    const colorStatus = new OrderColorStatus({ pickedColor: pickedColorArr })
+    await colorStatus.save((err, colorStatus) => {
+      if (err) return res.status(500).send({ message: 'Error Saving Color' });
+      res.status(201).json({ colorStatus, ok: true }); 
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: error
+    });
+  }
+
+});
+
+router.get('/color-status', async (req, res) => {
+  try {
+    const colorStatus = await OrderColorStatus.find();
+    res.status(200).json({
+      colorStatus,
+      msg: 'color status arr fetched successfully'
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: error
+    });
+  }
+
 });
 
 

@@ -104,10 +104,11 @@
                 </td>
                 <td>
                     <!-- <select #val (change)="onChange(val.value,i)" > -->
+                   
                     <select #val (change)="onChange(val.value,i, $event) ">
                         <option *ngFor="let status of statusArray" [value]="status">
                             <!-- <option *ngFor="let status of whenClicked;let index = index" [value]="status.value"> -->
-                            {{ status }}
+                            {{ status.status }}
                         </option>
                     </select>
 
@@ -218,9 +219,16 @@
             <mat-cell class="myTable-status" *matCellDef="let element;let i = index">
                 <!-- <mat-label>Favorite car</mat-label> -->
                 <!-- {{ element.status }} hello -->
+                <!-- <div>color{{ colorStatus | json }}</div> -->
+              
+                
+                <div class="colorStatus-wrapper" *ngIf="i == myIndex">
+                    <div *ngFor="let color of colorStatus;" class="color-status" [style.background]="i == myIndex ? color : null "></div>
+                    <button (click)="sendColorStatus(i)" mat-button color="primary" *ngIf="colorStatus.length>0">Save</button>
+                </div>
                 <select #val (change)="onChange1(val.value,i, $event) ">
                     <option *ngFor="let status of statusArray" [value]="status">
-                        {{ status }}
+                        {{ status.status }} 
                     </option>
                 </select>
             </mat-cell>
@@ -229,7 +237,7 @@
         <!-- inHand Date Column -->
         <ng-container matColumnDef="inHand">
             <mat-header-cell class="myTable-inHand" *matHeaderCellDef mat-sort-header> inHand </mat-header-cell>
-            <mat-cell class="myTable-inHand" *matCellDef="let element"> {{element.inHand}} </mat-cell>
+            <mat-cell class="myTable-inHand" *matCellDef="let element"> {{ element }} </mat-cell>
         </ng-container>
 
         <!-- Product Code Column -->
@@ -240,9 +248,11 @@
         <!-- Header Row -->
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <!-- others row which generated dynamically -->
-        <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"
+        <!-- <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"
             [style.text-decoration]=" optionCurrentIndex == 4 && i == myIndex ? myTextDecoration : null "
-            [style.background]=" i == myIndex ? colors(optionCurrentIndex) : 'transparent' "></mat-row>
+            [style.background]=" i == myIndex ? colors(optionCurrentIndex) : 'transparent' "></mat-row> -->
+            <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"
+            [style.text-decoration]=" optionCurrentIndex == 4 && i == myIndex ? myTextDecoration : null "></mat-row>
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>
             <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
@@ -274,3 +284,9 @@
         <td>{{ email.subject }}</td>
     </tr>
 </table>
+<div>
+    {{ colorStatusResult.colorStatus | json }}
+</div>
+<div *ngFor="let item of colorStatusResult.colorStatus">
+    {{item.pickedColor[0] | json}}
+</div>

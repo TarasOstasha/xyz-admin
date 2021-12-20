@@ -137,6 +137,8 @@ md-cell:hover{
   flex: auto!important;
   width: 15%;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
 .myTable-inHand {
   overflow: inherit!important;
@@ -154,4 +156,18 @@ md-cell:hover{
   //width: 20%!important;
 }
 
+.colorStatus-wrapper {
+  display: flex;
+  margin: 5px 0;
+  align-items: center;
+  button {
+    display: block;
+  }
+}
+.color-status {
+  width: 10px;
+  height: 10px;
+  border: 1px solid;
+  padding: 5px;
 
+}

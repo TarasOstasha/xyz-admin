@@ -1,0 +1,252 @@
+Delivered-To: tonyjoss1990@gmail.com
+Received: by 2002:a05:7010:281:b0:1e5:a885:4b63 with SMTP id d1csp2521997mdl;
+        Sun, 19 Dec 2021 14:18:15 -0800 (PST)
+X-Received: by 2002:a19:640f:: with SMTP id y15mr13126309lfb.487.1639952295172;
+        Sun, 19 Dec 2021 14:18:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1639952295; cv=none;
+        d=google.com; s=arc-20160816;
+        b=VShLD0+TPyWwyMhEtOxPkzS7icR23TUvOuiIaW08S3+TnI3fM3OFFnQhc7LmLY6tBx
+         vENFoZWfFhBA3na+lMdnupEU9/ijqGyeNO7+QoPRmUmR5/FlLNUqlsZI/mc1yPK+UP+L
+         pYsZpTAQfcnHKVpieGKta8kjCs3ND/SbTDRzZT9D8JuxDcLNMGf5Y6BGF2sOuT4YIuMu
+         9Il8/t7Yl1kC5TjQ+8yR3ihLht6B0ODD9O14zBRejz1cee01TOvGXf4WfH/t++dKHBbY
+         CdqeuvlHPj+FUAXxp3xVTz9MlsXT/8IdvJycVaMuS2HMj9bcYl2BYBrwvo+vBSIJxT8T
+         WFSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=7aUSt4q4RJKl5K/ibh5slR16+6F0DvaHWwwKvSmyYJs=;
+        b=j3F39iEKbDxw/iquHEC46+HA0mDzQvXUCiLaGj1fSsNThV0Ua3x5gLrHoyhnJyX4F3
+         hCJRSdWbwDXfb0tId/F5CGCTNH1s58wCm95m8p/S4QtqIYpEG6rajxoZw6zFyRVn4E5/
+         AcQ9s2j57ZKw3B/J9dxLIjHsGa/4LwjTNgsxt0mVVJOAwhY0OqjbyuvdRwA360aTEEDM
+         ypMWELk0fQUwyGiJ/2gRuxfZ6zNwqjQjsbHDhLP7HexmaoYV0qyFCMQBp7mSoVIC+aSU
+         B1rMw1oxli8rLXjBGgDjitJ2VbiuPEBb6BJ1gXzDJvmTJiyoQ1Kq0IWM3+8TBq1liAqf
+         naTw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20210112 header.b=hAnLS06i;
+       spf=pass (google.com: domain of garbiche.bucket90@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=garbiche.bucket90@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <garbiche.bucket90@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id bu24sor3431933lfb.71.2021.12.19.14.18.15
+        for <tonyjoss1990@gmail.com>
+        (Google Transport Security);
+        Sun, 19 Dec 2021 14:18:15 -0800 (PST)
+Received-SPF: pass (google.com: domain of garbiche.bucket90@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20210112 header.b=hAnLS06i;
+       spf=pass (google.com: domain of garbiche.bucket90@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=garbiche.bucket90@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=7aUSt4q4RJKl5K/ibh5slR16+6F0DvaHWwwKvSmyYJs=;
+        b=hAnLS06ibUg6v4gJWHf+F8YBJc+QleNc1ddSJc4G17dJBj0bAQd5YTaJeX+8Raoizo
+         UMFy8imAVpWLZUVb19Y1iqpOvfa8+kYilzl0oBaC+yHWpnhpkyoQ6a8e4rXKgGaK45YQ
+         nwW9vzzX9Ix5bK6dy+Np/Wz4LlOLrZDZp6qt+6XnCuIgpcZ1+2qQv/YvqWI8qyT+I/qH
+         iedFqnIU1xqCWCckr2I/yrdCvr1QdYv8JqZ0O8SdP3EzFm7l8Hh4qnitkb80KPDTIyTL
+         JU+RXFFF9Bk3xYfmpyqiKlXUGvLpsPZ78ZlU4X2n5a9S6o3Ay7kY9bs9QVvKUw+wkXhU
+         lKHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=7aUSt4q4RJKl5K/ibh5slR16+6F0DvaHWwwKvSmyYJs=;
+        b=Nkbfv77KPp358t8oV6EX4Rv3rKsyvLXb0VLMqA2OBKw47oEfjBsjn6oWj3MCWKzCen
+         HBiTy0kYftvXxZ8ikcDYvA5wx++U86UK+MsmAQHbuYJ/rx5HvR4A0/kbfPekqCu3RK/l
+         gvQgjxVQ6yQs6Tw1MHVNcq5QmAo6OTwcYqwQwTeKV2d1w6T6vGOKV78WtLM0xjio8+R9
+         olJHLMJVbzwUt06ony+IlSBf4al7Cmp5ZBV3nDVfrYf373svKQaf2nF3iwzetzaqZ713
+         roLoqccp0SIPPe4id253jARCKPj8q73EE8I5yQxdlAJjLiz+oM6J/9UFDZTmQF+QNG5q
+         e63w==
+X-Gm-Message-State: AOAM531Khi8G2wQdSRlmc6/y9BgSe1ONOYncI3EETb69Et+MbqFy9VCd
+	+ooGuq1CTzVTlgSget82N2p+Bch4QbldDjuMAY6Na/0ojAcHaw==
+X-Google-Smtp-Source: ABdhPJzEVURGPk/kCQIign/1cN89FWURPQqxRe/52PnhmblWm1ckssWNI6NFmfVj4flLPEd+ErUV+fI7MPCzz72hpos=
+X-Received: by 2002:a05:6512:3407:: with SMTP id i7mr4701026lfr.21.1639952294653;
+ Sun, 19 Dec 2021 14:18:14 -0800 (PST)
+MIME-Version: 1.0
+From: adrew mcconnor <garbiche.bucket90@gmail.com>
+Date: Sun, 19 Dec 2021 17:18:03 -0500
+Message-ID: <CAJfJnMJ9tNwCnSUv8zx_LkeCoo+oyzoGjz+kJoipqTbaNXU2Jw@mail.gmail.com>
+Subject: Order number 80000 received
+To: Taras <tonyjoss1990@gmail.com>
+Content-Type: multipart/alternative; boundary="000000000000f8b32405d3872541"
+
+--000000000000f8b32405d3872541
+Content-Type: text/plain; charset="UTF-8"
+
+Thank you for your order. Your order number is 19154, placed 11/18/2021 at
+09:07AM.
+
+*Bill To:*
+
+Human Ventures
+Heather Hartnett
+41 Madison Avenue
+31st Floor
+New York, NY 10010
+United States
+2035228272
+catherine@human.vc
+
+*Ship To:*
+
+Catherine Henry
+225 Liberty Street
+29th Floor
+New York, NY 10281
+United States
+2035228272
+
+*Payment Info:*
+
+*Credit Card*: American Express
+Heather Hartnett
+************2014
+Exp: 02/2026
+
+*Shipping Method:*
+
+3 Day Shipping
+
+*Order Details:*
+
+*Code*
+
+*Item*
+
+*Qty*
+
+*Price*
+
+*Grand Total*
+
+WS50320
+
+48in x 90in EZ Extend Tension Fabric Banner Stand (Single-Sided)
+[NA Options:No Case Selected]
+
+1
+
+$94.00
+
+$94.00
+
+
+
+
+
+Subtotal:
+
+$94.00
+
+
+
+NY Sales Tax (8.875%):
+
+$16.29
+
+
+
+Shipping Cost:
+
+$89.59
+
+
+
+Grand Total:
+
+$199.88
+
+--000000000000f8b32405d3872541
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><p class=3D"MsoNormal" style=3D"margin-bottom:12pt;font-fa=
+mily:Roboto,RobotoDraft,Helvetica,Arial,sans-serif"><span style=3D"font-siz=
+e:8.5pt;font-family:Verdana,sans-serif">Thank you for your order. Your orde=
+r number is 19154, placed 11/18/2021 at 09:07AM.<u></u><u></u></span></p><t=
+able border=3D"0" cellspacing=3D"1" cellpadding=3D"0" width=3D"100%" style=
+=3D"font-family:Roboto,RobotoDraft,Helvetica,Arial,sans-serif;width:604.688=
+px"><tbody><tr><td valign=3D"top" style=3D"padding:3.75pt"><p class=3D"MsoN=
+ormal" style=3D"margin-bottom:12pt"><b><span style=3D"font-size:8.5pt;font-=
+family:Verdana,sans-serif">Bill To:</span></b><span style=3D"font-size:8.5p=
+t;font-family:Verdana,sans-serif"><br><br>Human Ventures<br>Heather=C2=A0Ha=
+rtnett<br>41 Madison Avenue<br>31st Floor<br>New York, NY=C2=A010010<br>Uni=
+ted States<br>2035228272<br><a href=3D"mailto:catherine@human.vc" target=3D=
+"_blank">catherine@human.vc</a><u></u><u></u></span></p></td><td valign=3D"=
+top" style=3D"padding:3.75pt"><p class=3D"MsoNormal"><b><span style=3D"font=
+-size:8.5pt;font-family:Verdana,sans-serif">Ship To:</span></b><span style=
+=3D"font-size:8.5pt;font-family:Verdana,sans-serif"><br><br>Catherine=C2=A0=
+Henry<br>225 Liberty Street<br>29th Floor<br>New York, NY=C2=A010281<br>Uni=
+ted States<br>2035228272<u></u><u></u></span></p></td></tr><tr><td valign=
+=3D"top" style=3D"padding:3.75pt"><p class=3D"MsoNormal" style=3D"margin-bo=
+ttom:12pt"><b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif=
+">Payment Info:</span></b><span style=3D"font-size:8.5pt;font-family:Verdan=
+a,sans-serif"><br><br><b>Credit Card</b>:=C2=A0American Express<br>Heather =
+Hartnett<br>************2014<br>Exp: 02/2026<br><br><u></u><u></u></span></=
+p></td><td valign=3D"top" style=3D"padding:3.75pt"><p class=3D"MsoNormal"><=
+b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Shipping M=
+ethod:</span></b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-se=
+rif"><br><br>3 Day Shipping<u></u><u></u></span></p></td></tr><tr><td colsp=
+an=3D"2" valign=3D"top" style=3D"padding:3.75pt"><p class=3D"MsoNormal" sty=
+le=3D"margin-bottom:12pt"><b><span style=3D"font-size:8.5pt;font-family:Ver=
+dana,sans-serif">Order Details:</span></b><span style=3D"font-size:8.5pt;fo=
+nt-family:Verdana,sans-serif"><u></u><u></u></span></p><table border=3D"0" =
+cellpadding=3D"0" width=3D"100%" style=3D"width:592.688px;background:rgb(23=
+8,238,238)"><tbody><tr><td style=3D"padding:0.75pt"><p class=3D"MsoNormal">=
+<b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Code</spa=
+n></b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif"><u></u=
+><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNormal"=
+><b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Item</sp=
+an></b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif"><u></=
+u><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNormal=
+"><b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Qty</sp=
+an></b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif"><u></=
+u><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNormal=
+"><b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Price</=
+span></b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif"><u>=
+</u><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNorm=
+al"><b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Grand=
+ Total</span></b><span style=3D"font-size:8.5pt;font-family:Verdana,sans-se=
+rif"><u></u><u></u></span></p></td></tr><tr><td style=3D"padding:0.75pt"><p=
+ class=3D"MsoNormal"><span style=3D"font-size:8.5pt;font-family:Verdana,san=
+s-serif">WS50320<u></u><u></u></span></p></td><td style=3D"padding:0.75pt">=
+<p class=3D"MsoNormal"><span style=3D"font-size:8.5pt;font-family:Verdana,s=
+ans-serif">48in x 90in EZ Extend Tension Fabric Banner Stand (Single-Sided)=
+<br>[NA Options:No Case Selected]<u></u><u></u></span></p></td><td style=3D=
+"padding:0.75pt"><p class=3D"MsoNormal"><span style=3D"font-size:8.5pt;font=
+-family:Verdana,sans-serif">1<u></u><u></u></span></p></td><td style=3D"pad=
+ding:0.75pt"><p class=3D"MsoNormal"><span style=3D"font-size:8.5pt;font-fam=
+ily:Verdana,sans-serif">$94.00<u></u><u></u></span></p></td><td style=3D"pa=
+dding:0.75pt"><p class=3D"MsoNormal"><span style=3D"font-size:8.5pt;font-fa=
+mily:Verdana,sans-serif">$94.00<u></u><u></u></span></p></td></tr><tr><td c=
+olspan=3D"5" style=3D"padding:0.75pt"><p class=3D"MsoNormal"><span style=3D=
+"font-size:8.5pt;font-family:Verdana,sans-serif">=C2=A0<u></u><u></u></span=
+></p></td></tr><tr><td colspan=3D"3" style=3D"padding:0.75pt"><p class=3D"M=
+soNormal"><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">=
+=C2=A0<u></u><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=
+=3D"MsoNormal" align=3D"right" style=3D"text-align:right"><span style=3D"fo=
+nt-size:8.5pt;font-family:Verdana,sans-serif">Subtotal:<u></u><u></u></span=
+></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNormal"><span style=
+=3D"font-size:8.5pt;font-family:Verdana,sans-serif">$94.00<u></u><u></u></s=
+pan></p></td></tr><tr><td colspan=3D"3" style=3D"padding:0.75pt"><p class=
+=3D"MsoNormal"><span style=3D"font-size:8.5pt;font-family:Verdana,sans-seri=
+f">=C2=A0<u></u><u></u></span></p></td><td style=3D"padding:0.75pt"><p clas=
+s=3D"MsoNormal" align=3D"right" style=3D"text-align:right"><span style=3D"f=
+ont-size:8.5pt;font-family:Verdana,sans-serif">NY Sales Tax (8.875%):<u></u=
+><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNormal"=
+><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">$16.29<u></=
+u><u></u></span></p></td></tr><tr><td colspan=3D"3" style=3D"padding:0.75pt=
+"><p class=3D"MsoNormal"><span style=3D"font-size:8.5pt;font-family:Verdana=
+,sans-serif">=C2=A0<u></u><u></u></span></p></td><td style=3D"padding:0.75p=
+t"><p class=3D"MsoNormal" align=3D"right" style=3D"text-align:right"><span =
+style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Shipping Cost:<u><=
+/u><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNorma=
+l"><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">$89.59<u>=
+</u><u></u></span></p></td></tr><tr><td colspan=3D"3" style=3D"padding:0.75=
+pt"><p class=3D"MsoNormal"><span style=3D"font-size:8.5pt;font-family:Verda=
+na,sans-serif">=C2=A0<u></u><u></u></span></p></td><td style=3D"padding:0.7=
+5pt"><p class=3D"MsoNormal" align=3D"right" style=3D"text-align:right"><spa=
+n style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">Grand Total:<u><=
+/u><u></u></span></p></td><td style=3D"padding:0.75pt"><p class=3D"MsoNorma=
+l"><span style=3D"font-size:8.5pt;font-family:Verdana,sans-serif">$199.88</=
+span></p></td></tr></tbody></table></td></tr></tbody></table></div>
+
+--000000000000f8b32405d3872541--

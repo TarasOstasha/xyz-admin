@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { colorStatusInterface } from '../interfaces/colorStatusModel';
 
 
 
@@ -60,7 +61,13 @@ export class ApiService {
     localStorage.removeItem('name');
   }
 
+  colorStatus(colorStatus: colorStatusInterface ) {
+    return this._http.post(url + 'color-status', colorStatus).toPromise();
+  }
 
+  getColor() {
+    return this._http.get(url + 'color-status').toPromise();
+  }
 
 
 }
